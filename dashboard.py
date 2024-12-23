@@ -1,7 +1,7 @@
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import streamlit as st
 
 # Load Data dengan st.cache_data untuk caching
 @st.cache_data
