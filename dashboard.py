@@ -1,5 +1,6 @@
 import pandas as pd
-import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
 import streamlit as st
 
 # Load Data dengan st.cache_data untuk caching
@@ -40,11 +41,16 @@ selected_year = st.sidebar.selectbox('Select Year', [2011, 2012])
 filtered_monthly_rentals = monthly_rentals[monthly_rentals['year'] == selected_year]
 filtered_seasonal_rentals = seasonal_rentals[seasonal_rentals['year'] == selected_year]
 
-# Monthly Rentals Plot using Plotly
+# Monthly Rentals Plot using Matplotlib
 st.header(f"Monthly Rentals for {selected_year}")
-fig1 = px.bar(filtered_monthly_rentals, x='mnth', y='cnt', color='mnth', title=f'Monthly Bike Rentals in {selected_year}')
-fig1.update_layout(xaxis_title='Month', yaxis_title='Number of Rentals', xaxis={'categoryorder':'category ascending'})
-st.plotly_chart(fig1)
+fig1, ax1 = plt.subplots(figsize=(12, 6))
+sns.barplot(data=filtered_monthly_rentals, x='mnth', y='cnt', hue='mnth', ax=ax1)
+ax1.set_title(f'Monthly Bike Rentals in {selected_year}')
+ax1.set_xlabel('Month')
+ax1.set_ylabel('Number of Rentals')
+ax1.legend(title='Month')
+ax1.set_xticklabels(ax1.get_xticklabels(), rotation=45, ha="right")
+st.pyplot(fig1)
 
 # Penjelasan dinamis tentang Monthly Rentals
 st.subheader("Penjelasan tentang Monthly Rentals")
@@ -59,11 +65,15 @@ st.write(f"Pada bulan {selected_month} di tahun {selected_year}:")
 st.write(f"- Tertinggi: {month_data.loc[month_data['cnt'] == highest_rentals, 'cnt'].values[0]:,.0f} penyewaan.")
 st.write(f"- Terendah: {month_data.loc[month_data['cnt'] == lowest_rentals, 'cnt'].values[0]:,.0f} penyewaan.")
 
-# Seasonal Rentals Plot using Plotly
+# Seasonal Rentals Plot using Matplotlib
 st.header(f"Seasonal Rentals for {selected_year}")
-fig2 = px.bar(filtered_seasonal_rentals, x='season', y='cnt', color='season', title=f'Seasonal Bike Rentals in {selected_year}')
-fig2.update_layout(xaxis_title='Season', yaxis_title='Number of Rentals')
-st.plotly_chart(fig2)
+fig2, ax2 = plt.subplots(figsize=(12, 6))
+sns.barplot(data=filtered_seasonal_rentals, x='season', y='cnt', hue='season', ax=ax2)
+ax2.set_title(f'Seasonal Bike Rentals in {selected_year}')
+ax2.set_xlabel('Season')
+ax2.set_ylabel('Number of Rentals')
+ax2.legend(title='Season')
+st.pyplot(fig2)
 
 # Penjelasan dinamis tentang Seasonal Rentals
 st.subheader("Penjelasan tentang Seasonal Rentals")
